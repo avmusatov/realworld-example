@@ -1,25 +1,31 @@
+import { getItem, removeItem, setItem } from '../../helpers/localStorage';
 import { UserState, UserAction, UserActionTypes } from '../types/userTypes';
+
+const user = getItem('user');
 
 const initialState: UserState = {
     loading: false,
-    user: null,
+    user: user,
     error: null,
 };
 
 export const userReducer = (state = initialState, action: UserAction): UserState => {
-    console.log(action);
     switch (action.type) {
-        case UserActionTypes.TRY_SIGN_UP:
-            console.log(`DISPATCH ${UserActionTypes.TRY_SIGN_UP}`);
+        case UserActionTypes.TRY_AUTH:
             return { loading: true, user: null, error: null };
 
-        case UserActionTypes.SIGN_UP_SUCCESS:
-            console.log(`DISPATCH ${UserActionTypes.SIGN_UP_SUCCESS}`);
-            return { loading: false, user: action.payload, error: null };
+        case UserActionTypes.AUTH_SUCCESS:
+            const user = action.payload;
+            setItem('user', user);
+            return { loading: false, user, error: null };
 
-        case UserActionTypes.SIGN_UP_FAIL:
-            console.log(`DISPATCH ${UserActionTypes.SIGN_UP_FAIL}`);
+        case UserActionTypes.AUTH_FAIL:
             return { loading: false, user: null, error: action.payload };
+
+        case UserActionTypes.LOGOUT:
+            removeItem('user');
+            return initialState;
+
         default:
             return state;
     }

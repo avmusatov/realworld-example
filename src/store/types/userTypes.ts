@@ -1,7 +1,8 @@
 export enum UserActionTypes {
-    TRY_SIGN_UP = 'TRY_SIGN_UP',
-    SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS',
-    SIGN_UP_FAIL = 'SIGN_UP_FAIL',
+    TRY_AUTH = 'TRY_AUTH',
+    AUTH_SUCCESS = 'AUTH_SUCCESS',
+    AUTH_FAIL = 'AUTH_FAIL',
+    LOGOUT = 'LOGOUT',
 }
 
 export interface IUser {
@@ -23,8 +24,11 @@ export interface UserAction {
     payload?: any;
 }
 
-export interface SignUpData {
+export interface SignInData {
     email: string;
     password: string;
+}
+
+export interface SignUpData extends SignInData {
     username: string;
 }
