@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import { Form, Button, Container } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-import { useActions } from '../store/hooks/useActions';
+import { useActions } from '../hooks/useActions';
 import { SignInData } from '../store/types/userTypes';
 
 const initialFormValues: SignInData = {
@@ -29,8 +29,8 @@ const SignIn = () => {
             {({ values, errors, touched, handleChange, handleBlur, isValid, handleSubmit }) => {
                 const { email, password } = values;
                 return (
-                    <Container className="sign-up">
-                        <h1 >Welcome, to Real World!</h1>
+                    <Container className="auth-form">
+                        <h1 >Welcome to Real World!</h1>
                         <h2 className="mb-5 text-muted">Please, sign in</h2>
                         <Form.Group className="mb-3">
                             <Form.Label htmlFor="email">Email</Form.Label>

@@ -1,20 +1,17 @@
-import { Button } from 'react-bootstrap';
-import { useHistory } from 'react-router';
-import { useActions } from '../store/hooks/useActions';
-import { useTypedSelector } from '../store/hooks/useTypedSelector';
+import { useTypedSelector } from '../hooks/useTypedSelector';
+import { useEffect } from 'react';
+import { useSetActivePage } from '../hooks/useActivePage';
 
 const Home = () => {
-    const history = useHistory();
-    const { logOutUser } = useActions();
     const { user } = useTypedSelector((state) => state.user);
+    const setActivePage = useSetActivePage();
+
+    useEffect(setActivePage, [setActivePage]);
 
     return (
         <div className="home">
             <span>Hello, {user ? user.username : 'stranger'}</span>
             <br />
-            <Button variant="primary" onClick={() => void logOutUser(history)}>
-                Log out
-            </Button>
         </div>
     );
 };

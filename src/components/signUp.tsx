@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import { Form, Button, Container } from 'react-bootstrap';
 
-import { useActions } from '../store/hooks/useActions';
+import { useActions } from '../hooks/useActions';
 import { SignUpData } from '../store/types/userTypes';
 
 const initialFormValues: SignUpData = {
@@ -37,8 +37,8 @@ const SignUp = () => {
             {({ values, errors, touched, handleChange, handleBlur, isValid, handleSubmit }) => {
                 const { username, email, password, confirmPassword } = values;
                 return (
-                    <Container className="sign-up">
-                        <h1>Welcome, to Real World!</h1>
+                    <Container className="auth-form">
+                        <h1>Welcome to Real World!</h1>
                         <h2 className="mb-5 text-muted">Please, sign up</h2>
                         <Form.Group className="mb-3">
                             <Form.Label htmlFor="username">Username</Form.Label>
@@ -105,7 +105,7 @@ const SignUp = () => {
                             Sign Up
                         </Button>
                         <br />
-                        <Link to="/signIn"> Back to login </Link>
+                        <Link className="d-flex justify-content-center" to="/signIn"> Back to login </Link>
                     </Container>
                 );
             }}

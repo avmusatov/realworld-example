@@ -1,9 +1,8 @@
-.sign-up {
+.auth-form {
+    margin-top: 5rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+    width: 50%;
 }
 
 .sign-up .form-group {
