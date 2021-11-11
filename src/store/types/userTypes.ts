@@ -31,4 +31,5 @@ export interface SignInData {
 
 export interface SignUpData extends SignInData {
     username: string;
+    confirmPassword: string;
 }

@@ -1,7 +1,7 @@
+import { Button } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import { useActions } from '../store/hooks/useActions';
 import { useTypedSelector } from '../store/hooks/useTypedSelector';
-import Button from './button';
 
 const Home = () => {
     const history = useHistory();
@@ -12,13 +12,9 @@ const Home = () => {
         <div className="home">
             <span>Hello, {user ? user.username : 'stranger'}</span>
             <br />
-            <Button
-                label="Log out"
-                onClick={() => {
-                    logOutUser();
-                    history.push('/signIn');
-                }}
-            />
+            <Button variant="primary" onClick={() => void logOutUser(history)}>
+                Log out
+            </Button>
         </div>
     );
 };

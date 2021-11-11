@@ -1,13 +1,17 @@
 import { Dispatch } from 'redux';
 import { SignUpData, SignInData, UserAction, UserActionTypes } from '../types/userTypes';
 import { makePostRequest } from '../../helpers/requests';
+import { History } from "history";
 
 export const signUpUser =
-    ({ email, password, username }: SignUpData) =>
+    (history: History, { email, password, username }: SignUpData) =>
     async (dispatch: Dispatch<UserAction>) => {
         dispatch({ type: UserActionTypes.TRY_AUTH });
         makePostRequest(`/users`, { user: { email, password, username } })
-            .then((res) => dispatch({ type: UserActionTypes.AUTH_SUCCESS, payload: res.data.user }))
+            .then((res) => {
+                dispatch({ type: UserActionTypes.AUTH_SUCCESS, payload: res.data.user });
+                history.push('/home');
+            })
             .catch((err) =>
                 dispatch({
                     type: UserActionTypes.AUTH_FAIL,
@@ -17,11 +21,14 @@ export const signUpUser =
     };
 
 export const signInUser =
-    ({ email, password }: SignInData) =>
+    (history: History, { email, password }: SignInData) =>
     async (dispatch: Dispatch<UserAction>) => {
         dispatch({ type: UserActionTypes.TRY_AUTH });
         makePostRequest(`/users/login`, { user: { email, password } })
-            .then((res) => dispatch({ type: UserActionTypes.AUTH_SUCCESS, payload: res.data.user }))
+            .then((res) => {
+                dispatch({ type: UserActionTypes.AUTH_SUCCESS, payload: res.data.user });
+                history.push('/home');
+            })
             .catch((err) =>
                 dispatch({
                     type: UserActionTypes.AUTH_FAIL,
@@ -30,4 +37,7 @@ export const signInUser =
             );
     };
 
-export const logOutUser = () => (dispatch: Dispatch<UserAction>) => dispatch({ type: UserActionTypes.LOGOUT });
+export const logOutUser = (history: History) => (dispatch: Dispatch<UserAction>) => {
+    dispatch({ type: UserActionTypes.LOGOUT });
+    history.push('/signIn');
+};
