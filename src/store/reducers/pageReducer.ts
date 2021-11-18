@@ -1,16 +1,4 @@
-interface PageState {
-    activePage: string;
-}
-
-export enum PageActionTypes {
-    SET_ACTIVE_PAGE = 'SET_ACTIVE_PAGE',
-    RESET_ACTIVE_PAGE = 'RESET_ACTIVE_PAGE',
-}
-
-export interface PageAction {
-    type: keyof typeof PageActionTypes;
-    payload?: any;
-}
+import { PageAction, PageActionTypes, PageState } from "../types/pageTypes";
 
 const initialState: PageState = {
     activePage: '',

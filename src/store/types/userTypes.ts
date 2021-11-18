@@ -16,7 +16,7 @@ export interface IUser {
 export interface UserState {
     user: IUser | null;
     loading: boolean;
-    error: null | string;
+    error: Error | null;
 }
 
 export interface UserAction {

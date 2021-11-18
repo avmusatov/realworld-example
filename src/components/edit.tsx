@@ -3,9 +3,7 @@ import { useSetActivePage } from '../hooks/useActivePage';
 
 const Edit = () => {
     const setActivePage = useSetActivePage();
-
-    useEffect(setActivePage, [setActivePage]);
-
+    useEffect(() => void setActivePage(), [setActivePage]);
     return <div>Edit page!</div>;
 };
 

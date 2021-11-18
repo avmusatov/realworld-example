@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { SignUpData, SignInData, UserAction, UserActionTypes } from '../types/userTypes';
 import { makePostRequest } from '../../helpers/requests';
-import { History } from "history";
+import { History } from 'history';
 
 export const signUpUser =
     (history: History, { email, password, username }: SignUpData) =>
@@ -15,7 +15,7 @@ export const signUpUser =
             .catch((err) =>
                 dispatch({
                     type: UserActionTypes.AUTH_FAIL,
-                    payload: `Sometrhing went wrong while trying signing up with error: ${String(err)}`,
+                    payload: err,
                 })
             );
     };
@@ -32,7 +32,7 @@ export const signInUser =
             .catch((err) =>
                 dispatch({
                     type: UserActionTypes.AUTH_FAIL,
-                    payload: `Sometrhing went wrong while trying signing in with error: ${String(err)}`,
+                    payload: err,
                 })
             );
     };

@@ -7,12 +7,13 @@ import SignIn from './signIn';
 import SignUp from './signUp';
 import Spinner from './spinner';
 import Edit from './edit';
+import ErrorIndicator from './errorIndicator';
 
 const App = () => {
     const { user, loading, error } = useTypedSelector((state) => state.user);
 
     if (loading) return <Spinner />;
-    if (error) return <p>{error}</p>;
+    if (error) return <ErrorIndicator err={error} />;
 
     return (
         <Container>
