@@ -24,7 +24,7 @@ export const userReducer = (state = initialState, action: UserAction): UserState
 
         case UserActionTypes.LOGOUT:
             removeItem('user');
-            return initialState;
+            return { loading: false, user: null, error: null };
 
         default:
             return state;

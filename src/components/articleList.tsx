@@ -17,9 +17,9 @@ const ArticleList = () => {
 
     return (
         <>
-            {articleList.map((article) => (
+            {articleList.length > 0 ? articleList.map((article) => (
                 <ArticleCard key={article.createdAt} article={article} />
-            ))}
+            )) : <h5 className="text-info">No articles yet!</h5>}
         </>
     );
 };

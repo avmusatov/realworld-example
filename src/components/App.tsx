@@ -8,6 +8,7 @@ import SignUp from './signUp';
 import Spinner from './spinner';
 import Edit from './edit';
 import ErrorIndicator from './errorIndicator';
+import User from './user';
 
 const App = () => {
     const { user, loading, error } = useTypedSelector((state) => state.user);
@@ -26,6 +27,7 @@ const App = () => {
                     <Switch>
                         <Route path="/home" component={Home} />
                         <Route path="/edit" component={Edit} />
+                        <Route path="/user" component={User} />
                         <Redirect to="/home" />
                     </Switch>
                 </Route>

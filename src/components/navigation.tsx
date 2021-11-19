@@ -5,7 +5,7 @@ import { useTypedSelector } from '../hooks/useTypedSelector';
 
 const pages = [
     { page: 'Home', path: '/home' },
-    { page: 'Write an article', path: '/edit' },
+    { page: 'Edit', path: '/edit' },
 ];
 
 const NavigationMenu = () => {
@@ -21,15 +21,29 @@ const NavigationMenu = () => {
             {user && (
                 <Navbar.Collapse>
                     <Nav>
-                        {pages.map(({ path, page }) => (
-                            <Nav.Link key={path} as={Link} to={path} active={path === activePage}>
-                                {page}
-                            </Nav.Link>
-                        ))}
+                        {pages.map(({ path, page }) => {
+                            const active = path === activePage;
+                            return (
+                                <Nav.Link
+                                    className={active ? 'fw-bold': undefined}
+                                    key={path}
+                                    as={Link}
+                                    to={path}
+                                    active={active}
+                                >
+                                    {page}
+                                </Nav.Link>
+                            );
+                        })}
                     </Nav>
-                    <Button className="ms-auto" variant="primary" onClick={logOut}>
-                        Log out
-                    </Button>
+                    <div className="ms-auto">
+                        <Link to="/user" className="text-decoration-none text-primary fw-bold me-3">
+                            {user.username}
+                        </Link>
+                        <Button variant="primary" onClick={logOut}>
+                            Log out
+                        </Button>
+                    </div>
                 </Navbar.Collapse>
             )}
         </Navbar>

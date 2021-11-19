@@ -8,6 +8,7 @@ export type Author = {
     username: string;
     bio: string;
     image: string;
+    following?: boolean;
 };
 
 export type Comment = {
@@ -30,6 +31,13 @@ export interface IArticle {
     comments: Comment[];
     favoritesCount: number;
     favorited: boolean;
+}
+
+export interface CreateArticleData {
+    title: string;
+    description: string;
+    body: string;
+    tagList?: string[];
 }
 
 export interface ArticleState {

@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { SignUpData, SignInData, UserAction, UserActionTypes } from '../types/userTypes';
-import { makePostRequest } from '../../helpers/requests';
+import { makePostRequest, makePutRequest } from '../../helpers/requests';
 import { History } from 'history';
 
 export const signUpUser =
@@ -25,6 +25,23 @@ export const signInUser =
     async (dispatch: Dispatch<UserAction>) => {
         dispatch({ type: UserActionTypes.TRY_AUTH });
         makePostRequest(`/users/login`, { user: { email, password } })
+            .then((res) => {
+                dispatch({ type: UserActionTypes.AUTH_SUCCESS, payload: res.data.user });
+                history.push('/home');
+            })
+            .catch((err) =>
+                dispatch({
+                    type: UserActionTypes.AUTH_FAIL,
+                    payload: err,
+                })
+            );
+    };
+
+export const updateUser =
+    (history: History, { username, email, bio }: any) =>
+    async (dispatch: Dispatch<UserAction>) => {
+        dispatch({ type: UserActionTypes.TRY_AUTH });
+        makePutRequest(`/user`, { user: { username, email, bio } }, true)
             .then((res) => {
                 dispatch({ type: UserActionTypes.AUTH_SUCCESS, payload: res.data.user });
                 history.push('/home');

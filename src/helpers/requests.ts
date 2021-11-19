@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { getItem } from './localStorage';
 
-const { token } = getItem('user');
+const user = getItem('user');
+const token = user ? user.token : undefined;
 const _apiBase = 'https://api.realworld.io/api';
 const commonHeaders: any = {
     'Content-Type': 'application/json',
@@ -22,5 +23,10 @@ export const makeGetRequest = async (path: string, withAuth?: boolean) =>
 
 export const makePutRequest = async (path: string, body: any, withAuth?: boolean) =>
     await axios.put(`${_apiBase}${path}`, body, {
+        headers: withAuth && token ? addAuthHeader(commonHeaders, token) : commonHeaders,
+    });
+
+export const makeDeleteRequest = async (path: string, withAuth?: boolean) =>
+    await axios.delete(`${_apiBase}${path}`, {
         headers: withAuth && token ? addAuthHeader(commonHeaders, token) : commonHeaders,
     });

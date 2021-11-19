@@ -1,11 +1,9 @@
-import { useTypedSelector } from '../hooks/useTypedSelector';
 import { useSetActivePage } from '../hooks/useActivePage';
 import { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import ArticleList from './articleList';
 
 const Home = () => {
-    const { user } = useTypedSelector((state) => state.user);
     const setActivePage = useSetActivePage();
 
     useEffect(() => {
@@ -15,7 +13,7 @@ const Home = () => {
 
     return (
         <Container className="home">
-            <h5>Hello, {user && user.username}</h5>
+            <h2 className="text-center">All articles</h2>
             <br />
             <ArticleList />
         </Container>
