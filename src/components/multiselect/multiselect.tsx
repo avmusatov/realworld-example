@@ -81,6 +81,7 @@ const MultiSelect: FC<Props> = ({ options, selectedOptions, updateSelectedOption
 
         return () => {
             document.removeEventListener('mousedown', checkIfClickedOutside);
+            document.removeEventListener('keydown', addNewOptionByEnterPress);
         };
     }, [menuIsOpen, searchQuery, selectedOptions, updateSelectedOptions]);
 
@@ -169,7 +170,9 @@ const MultiSelect: FC<Props> = ({ options, selectedOptions, updateSelectedOption
     };
 
     const defaultLabel =
-        selectedOptions.length === 0 && searchQuery === '' ? <DefaultLabel>Search or input your tag</DefaultLabel> : null;
+        selectedOptions.length === 0 && searchQuery === '' ? (
+            <DefaultLabel>Search or input your tag</DefaultLabel>
+        ) : null;
 
     const deleteAllButton = selectedOptions.length > 0 ? <Icon type="x" action={deleteAllSelectedOptions} /> : null;
 

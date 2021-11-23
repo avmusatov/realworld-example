@@ -38,7 +38,7 @@ export const signInUser =
     };
 
 export const updateUser =
-    (history: History, { username, email, bio }: any) =>
+    (history: History, { username, email, bio }: Record<string, string | null>) =>
     async (dispatch: Dispatch<UserAction>) => {
         dispatch({ type: UserActionTypes.TRY_AUTH });
         makePutRequest(`/user`, { user: { username, email, bio } }, true)
