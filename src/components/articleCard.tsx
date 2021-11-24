@@ -5,6 +5,7 @@ import { makeDeleteRequest, makePostRequest } from '../helpers/requests';
 import Icon from './multiselect/icon';
 import { useActions } from '../hooks/useActions';
 import { useTranslation } from 'react-i18next';
+import { formatDate } from '../helpers/format';
 
 interface CommentSectionProps {
     slug: string;
@@ -67,7 +68,7 @@ const ArticleCard = ({ article }: Props) => {
     const { fetchArticles } = useActions();
     const { slug, title, description, body, comments, author, tagList, createdAt } = article;
     const [commentsIsVisible, setCommentsIsVisible] = useState<boolean>(false);
-    const { t } = useTranslation();
+    const { i18n, t } = useTranslation();
 
     const deleteArticle = useCallback(() => {
         makeDeleteRequest(`/articles/${slug}`, true).then(() => fetchArticles());
@@ -87,9 +88,7 @@ const ArticleCard = ({ article }: Props) => {
                 <footer className="blockquote-footer">
                     <span>{author.username}</span>
                     <br />
-                    <span>
-                        {t('article.posted')} {new Date(createdAt).toDateString()}
-                    </span>
+                    <span>{t('article.posted', { date: formatDate(new Date(createdAt), i18n.language) })}</span>
                 </footer>
                 {tagList.length > 0 && (
                     <div className="mb-3">

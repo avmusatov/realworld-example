@@ -18,7 +18,7 @@
         "noArticles": "There are no articles yet!"
     },
     "article": {
-        "posted": "Posted",
+        "posted": "Posted {{date}}",
         "hideComments": "Hide comments",
         "showComments": "Show comments"
     },
