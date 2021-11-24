@@ -13,6 +13,7 @@ import {
     DefaultLabel,
     StyledInput,
 } from './styledComponents';
+import { useTranslation } from 'react-i18next';
 
 const ENTER_KEY_CODE = 'Enter';
 
@@ -29,6 +30,7 @@ interface Props {
     options: IOption[];
     selectedOptions: IOrderedOption[];
     updateSelectedOptions: any;
+    placeholder?: string;
 }
 
 const addOrderToOptions = (options: IOption[]): IOrderedOption[] => {
@@ -48,10 +50,11 @@ const removeOptionByIndex = (idx: number, options: IOrderedOption[]): IOrderedOp
     return [...options.slice(0, idx), ...options.slice(idx + 1)];
 };
 
-const MultiSelect: FC<Props> = ({ options, selectedOptions, updateSelectedOptions }) => {
+const MultiSelect: FC<Props> = ({ options, selectedOptions, updateSelectedOptions, placeholder }) => {
     const [optionsInMenu, updateOptionsInMenu] = useState<IOrderedOption[]>(addOrderToOptions(options));
     const [menuIsOpen, toggleMenu] = useState<boolean>(false);
     const [searchQuery, setSearchQuery] = useState<string>('');
+    const { t } = useTranslation();
     const [focused, setFocused] = useState<boolean>(false);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -152,12 +155,12 @@ const MultiSelect: FC<Props> = ({ options, selectedOptions, updateSelectedOption
                                 );
                             })
                     ) : (
-                        <DefaultLabel>No options to select</DefaultLabel>
+                        <DefaultLabel>{t('multiselect.noOptions')}</DefaultLabel>
                     )}
                 </Menu>
             );
         },
-        [searchQuery, addSelectedOption]
+        [searchQuery, addSelectedOption, t]
     );
 
     const onSearchQueryChanged = (event: ChangeEvent<HTMLInputElement>) => {
@@ -170,9 +173,7 @@ const MultiSelect: FC<Props> = ({ options, selectedOptions, updateSelectedOption
     };
 
     const defaultLabel =
-        selectedOptions.length === 0 && searchQuery === '' ? (
-            <DefaultLabel>Search or input your tag</DefaultLabel>
-        ) : null;
+        selectedOptions.length === 0 && searchQuery === '' ? <DefaultLabel>{placeholder}</DefaultLabel> : null;
 
     const deleteAllButton = selectedOptions.length > 0 ? <Icon type="x" action={deleteAllSelectedOptions} /> : null;
 

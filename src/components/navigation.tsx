@@ -1,16 +1,25 @@
 import { Navbar, Nav, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useLogOut } from '../hooks/useLogOut';
 import { useTypedSelector } from '../hooks/useTypedSelector';
-
-const pages = [
-    { page: 'Home', path: '/home' },
-    { page: 'Edit', path: '/edit' },
-];
+import { Form } from 'react-bootstrap';
+import { useMemo } from 'react';
 
 const NavigationMenu = () => {
     const logOut = useLogOut();
     const { user, activePage } = useTypedSelector(({ user, page }) => ({ ...user, ...page }));
+    const { t, i18n } = useTranslation();
+
+    const pages = useMemo(
+        () => [
+            { page: t('pages.home'), path: '/home' },
+            { page: t('pages.edit'), path: '/edit' },
+        ],
+        [t]
+    );
+
+    const changeLanguage = (lang: string) => i18n.changeLanguage(lang);
 
     return (
         <Navbar expand="lg">
@@ -18,6 +27,15 @@ const NavigationMenu = () => {
                 Real World application
             </Navbar.Brand>
             <Navbar.Toggle />
+            <Form.Select
+                value={i18n.language}
+                onChange={(e) => changeLanguage(e.target.value)}
+                style={{ width: 'max-content' }}
+                aria-label="Default select example"
+            >
+                <option value="en">EN</option>
+                <option value="ru">RU</option>
+            </Form.Select>
             {user && (
                 <Navbar.Collapse>
                     <Nav>
@@ -25,7 +43,7 @@ const NavigationMenu = () => {
                             const active = path === activePage;
                             return (
                                 <Nav.Link
-                                    className={active ? 'fw-bold': undefined}
+                                    className={active ? 'fw-bold' : undefined}
                                     key={path}
                                     as={Link}
                                     to={path}
@@ -36,12 +54,12 @@ const NavigationMenu = () => {
                             );
                         })}
                     </Nav>
-                    <div className="ms-auto">
-                        <Link to="/user" className="text-decoration-none text-primary fw-bold me-3">
+                    <div className="ms-auto d-flex align-items-center">
+                        <Link to="/user" className="text-decoration-none text-primary fw-bold me-3 ms-3">
                             {user.username}
                         </Link>
-                        <Button variant="primary" onClick={logOut}>
-                            Log out
+                        <Button style={{ whiteSpace: 'nowrap' }} variant="primary" onClick={logOut}>
+                            {t('auth.logOut')}
                         </Button>
                     </div>
                 </Navbar.Collapse>

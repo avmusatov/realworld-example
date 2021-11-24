@@ -1,0 +1,74 @@
+{
+    "auth": {
+        "title": "Welcome to Real World!",
+        "signIn": "Sign In",
+        "signUp": "Sign Up",
+        "signUpSubtitle": "Please, sign up",
+        "signInSubtitle": "Please, sign in",
+        "username": "Username",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm password",
+        "toSignUp": "Create an account",
+        "toSignIn": "Back to login",
+        "logOut": "Log out"
+    },
+    "home": {
+        "title": "All articles",
+        "noArticles": "There are no articles yet!"
+    },
+    "article": {
+        "posted": "Posted",
+        "hideComments": "Hide comments",
+        "showComments": "Show comments"
+    },
+    "comment": {
+        "title": "Comments",
+        "noComments": "There are no comments yet!",
+        "leaveComment": "Leave a comment",
+        "submit": "Submit",
+        "cancel": "Cancel"
+    },
+    "edit": {
+        "title": "Write your own article!",
+        "articleTitle": "Title",
+        "articleDescription": "Description",
+        "articleBody": "Body",
+        "articleTags": "Tags",
+        "postArticle": "Post article",
+        "successMessage": "Your article has been succesfully posted!"
+    },
+    "validation": {
+        "required": "Required",
+        "email": "Enter a correct email address",
+        "min3": "Enter at least 3 symbols",
+        "passwordMismatch": "Password mismatch"
+    },
+    "multiselect": {
+        "noOptions": "No options to select"
+    },
+    "user": {
+        "title": "Edit personal info",
+        "editUsername": "Edit username",
+        "editEmail": "Edit email",
+        "editBio": "Edit bio",
+        "save": "Save changes"
+    },
+    "placeholders": {
+        "username": "Enter username",
+        "email": "Enter email",
+        "password": "Enter password",
+        "confirmPassword": "Confirm password",
+        "bio": "Enter bio",
+        "articleTitle": "Enter the title of your article",
+        "articleDescription": "Enter the description of your article",
+        "articleBody": "Enter the body of your article",
+        "articleTags": "Search or input your tags",
+        "selectTags": "Choose or input your own tags",
+        "leaveComment": "Leave your comment"
+    },
+    "pages": {
+        "home": "Home",
+        "edit": "Edit"
+    }
+}

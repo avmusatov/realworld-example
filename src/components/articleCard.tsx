@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react';
 import { makeDeleteRequest, makePostRequest } from '../helpers/requests';
 import Icon from './multiselect/icon';
 import { useActions } from '../hooks/useActions';
+import { useTranslation } from 'react-i18next';
 
 interface CommentSectionProps {
     slug: string;
@@ -14,6 +15,7 @@ interface CommentSectionProps {
 const CommentSection = ({ slug, comments, close }: CommentSectionProps) => {
     const [inputValue, setInputValue] = useState<string>('');
     const [commentList, setCommentList] = useState<Comment[]>(comments);
+    const { t } = useTranslation();
 
     const postComment = useCallback((slug: string, inputValue) => {
         setInputValue('');
@@ -24,7 +26,7 @@ const CommentSection = ({ slug, comments, close }: CommentSectionProps) => {
 
     return (
         <Card.Body>
-            <h5>Comments</h5>
+            <h5>{t('comment.title')}</h5>
             {commentList.length > 0 ? (
                 <ListGroup variant="flush">
                     {commentList.map(({ author, body, id }) => (
@@ -35,22 +37,22 @@ const CommentSection = ({ slug, comments, close }: CommentSectionProps) => {
                     ))}
                 </ListGroup>
             ) : (
-                <span>There are no comments yet!</span>
+                <span>{t('comment.noComments')}</span>
             )}
             <Form.Group className="mt-3">
-                <Form.Label>Leave a comment!</Form.Label>
+                <Form.Label>{t('comment.leaveComment')}</Form.Label>
                 <Form.Control
                     className="mb-3"
                     type="text"
-                    placeholder="Leave your comment"
+                    placeholder={t('placeholders.leaveComment')}
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                 />
                 <Button onClick={() => postComment(slug, inputValue)} className="me-3" variant="success">
-                    Submit
+                    {t('comment.submit')}
                 </Button>
                 <Button onClick={close} variant="secondary">
-                    Cancel
+                    {t('comment.cancel')}
                 </Button>
             </Form.Group>
         </Card.Body>
@@ -62,9 +64,10 @@ interface Props {
 }
 
 const ArticleCard = ({ article }: Props) => {
-    const {fetchArticles} = useActions();
+    const { fetchArticles } = useActions();
     const { slug, title, description, body, comments, author, tagList, createdAt } = article;
     const [commentsIsVisible, setCommentsIsVisible] = useState<boolean>(false);
+    const { t } = useTranslation();
 
     const deleteArticle = useCallback(() => {
         makeDeleteRequest(`/articles/${slug}`, true).then(() => fetchArticles());
@@ -84,7 +87,9 @@ const ArticleCard = ({ article }: Props) => {
                 <footer className="blockquote-footer">
                     <span>{author.username}</span>
                     <br />
-                    <span>Posted {new Date(createdAt).toDateString()}</span>
+                    <span>
+                        {t('article.posted')} {new Date(createdAt).toDateString()}
+                    </span>
                 </footer>
                 {tagList.length > 0 && (
                     <div className="mb-3">
@@ -96,7 +101,7 @@ const ArticleCard = ({ article }: Props) => {
                     </div>
                 )}
                 <Button onClick={() => setCommentsIsVisible((x) => !x)} variant="info">
-                    {commentsIsVisible ? 'Hide comments' : 'Show comments'}
+                    {commentsIsVisible ? t('article.hideComments') : t('article.showComments')}
                 </Button>
             </Card.Body>
             {commentsIsVisible && (

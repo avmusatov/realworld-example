@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSetActivePage } from '../hooks/useActivePage';
 import * as yup from 'yup';
 import { Formik } from 'formik';
@@ -6,18 +6,13 @@ import { CreateArticleData } from '../store/types/articleTypes';
 import { Button, Container, Form } from 'react-bootstrap';
 import { makePostRequest } from '../helpers/requests';
 import MultiSelect, { IOrderedOption } from './multiselect/multiselect';
+import { useTranslation } from 'react-i18next';
 
 const initialFormValues: CreateArticleData = {
     title: '',
     description: '',
     body: '',
 };
-
-const validationSchema = yup.object().shape({
-    title: yup.string().required('Required').min(3, 'Write at least 3 symbols').max(150),
-    description: yup.string().required('Required').min(3, 'Write at least 3 symbols').max(300),
-    body: yup.string().required('Required').max(1000),
-});
 
 const tagVariants = [
     { value: 'Math', label: 'Math' },
@@ -33,9 +28,20 @@ const tagVariants = [
 const Edit = () => {
     const [articlePosted, setArticlePosted] = useState<boolean>(false);
     const [selectedTags, setSelectedTags] = useState<IOrderedOption[]>([]);
+    const { t } = useTranslation();
 
     const setActivePage = useSetActivePage();
     useEffect(() => void setActivePage(), [setActivePage]);
+
+    const validationSchema = useMemo(
+        () =>
+            yup.object().shape({
+                title: yup.string().required(t('validation.required')).min(3, t('validation.min3')).max(150),
+                description: yup.string().required(t('validation.required')).min(3, t('validation.min3')).max(300),
+                body: yup.string().required(t('validation.required')).max(1000),
+            }),
+        [t]
+    );
 
     const postArticle = useCallback(
         (article: CreateArticleData) => {
@@ -59,23 +65,23 @@ const Edit = () => {
                 const { title, description, body } = values;
                 return (
                     <Container>
-                        <h2 className="text-center">Write your own article!</h2>
+                        <h2 className="text-center">{t('edit.title')}</h2>
                         <Form.Group className="mb-3">
-                            <Form.Label htmlFor="title">Title</Form.Label>
+                            <Form.Label htmlFor="title">{t('edit.articleTitle')}</Form.Label>
                             <Form.Control
                                 value={title}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="title"
                                 id="title"
-                                placeholder="Enter the title of your article"
+                                placeholder={t('placeholders.articleTitle')}
                             />
                             {touched.title && errors.title && (
                                 <Form.Text className="text-danger ">{errors.title}</Form.Text>
                             )}
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label htmlFor="description">Description</Form.Label>
+                            <Form.Label htmlFor="description">{t('edit.articleDescription')}</Form.Label>
                             <Form.Control
                                 as="textarea"
                                 rows={2}
@@ -84,14 +90,14 @@ const Edit = () => {
                                 onBlur={handleBlur}
                                 name="description"
                                 id="description"
-                                placeholder="Enter the description of your article"
+                                placeholder={t('placeholders.articleDescription')}
                             />
                             {touched.description && errors.description && (
                                 <Form.Text className="text-danger ">{errors.description}</Form.Text>
                             )}
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label htmlFor="description">Body</Form.Label>
+                            <Form.Label htmlFor="description">{t('edit.articleBody')}</Form.Label>
                             <Form.Control
                                 as="textarea"
                                 rows={5}
@@ -100,18 +106,19 @@ const Edit = () => {
                                 onBlur={handleBlur}
                                 name="body"
                                 id="body"
-                                placeholder="Enter the body of your article"
+                                placeholder={t('placeholders.articleBody')}
                             />
                             {touched.body && errors.body && (
                                 <Form.Text className="text-danger ">{errors.body}</Form.Text>
                             )}
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Tags</Form.Label>
+                            <Form.Label>{t('edit.articleTags')}</Form.Label>
                             <MultiSelect
                                 selectedOptions={selectedTags}
                                 updateSelectedOptions={setSelectedTags}
                                 options={tagVariants}
+                                placeholder={t('placeholders.selectTags')}
                             />
                         </Form.Group>
                         <Button
@@ -121,9 +128,9 @@ const Edit = () => {
                             type="submit"
                             onClick={() => handleSubmit()}
                         >
-                            Post the article
+                            {t('edit.postArticle')}
                         </Button>
-                        {articlePosted && <h6 className="text-success">Your article has succesfully posted!</h6>}
+                        {articlePosted && <h6 className="text-success">{t('edit.successMessage')}</h6>}
                     </Container>
                 );
             }}

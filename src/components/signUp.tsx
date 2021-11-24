@@ -2,9 +2,10 @@ import { Link, useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { Form, Button, Container } from 'react-bootstrap';
-
+import { useTranslation } from 'react-i18next';
 import { useActions } from '../hooks/useActions';
 import { SignUpData } from '../store/types/userTypes';
+import { useMemo } from 'react';
 
 const initialFormValues: SignUpData = {
     username: '',
@@ -13,19 +14,24 @@ const initialFormValues: SignUpData = {
     confirmPassword: '',
 };
 
-const validationSchema = yup.object().shape({
-    username: yup.string().required('Required').min(5, 'Minimal length is 5'),
-    email: yup.string().email('Enter a correct email address').required('Required'),
-    password: yup.string().required('Required').min(3, 'Minimal length is 3'),
-    confirmPassword: yup
-        .string()
-        .oneOf([yup.ref('password')], 'Password mismatch')
-        .required('Required'),
-});
-
 const SignUp = () => {
     const { signUpUser } = useActions();
     const history = useHistory();
+    const { t } = useTranslation();
+
+    const validationSchema = useMemo(
+        () =>
+            yup.object().shape({
+                username: yup.string().required(t('validation.required')).min(3, t('validation.min3')),
+                email: yup.string().email(t('validation.email')).required(t('validation.required')),
+                password: yup.string().required(t('validation.required')).min(3, t('validation.min3')),
+                confirmPassword: yup
+                    .string()
+                    .oneOf([yup.ref('password')], t('validation.passwordMismatch'))
+                    .required(t('validation.required')),
+            }),
+        [t]
+    );
 
     return (
         <Formik
@@ -38,31 +44,31 @@ const SignUp = () => {
                 const { username, email, password, confirmPassword } = values;
                 return (
                     <Container className="auth-form">
-                        <h1>Welcome to Real World!</h1>
-                        <h2 className="mb-5 text-muted">Please, sign up</h2>
+                        <h1>{t('auth.title')}</h1>
+                        <h2 className="mb-5 text-muted">{t('auth.signUpSubtitle')}</h2>
                         <Form.Group className="mb-3">
-                            <Form.Label htmlFor="username">Username</Form.Label>
+                            <Form.Label htmlFor="username">{t('auth.username')}</Form.Label>
                             <Form.Control
                                 value={username}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="username"
                                 id="username"
-                                placeholder="Enter username"
+                                placeholder={t('placeholders.username')}
                             />
                             {touched.username && errors.username && (
                                 <Form.Text className="text-danger ">{errors.username}</Form.Text>
                             )}
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label htmlFor="email">Email</Form.Label>
+                            <Form.Label htmlFor="email">{t('auth.email')}</Form.Label>
                             <Form.Control
                                 value={email}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="email"
                                 id="email"
-                                placeholder="Enter email"
+                                placeholder={t('placeholders.email')}
                             />
                             {touched.email && errors.email && (
                                 <Form.Text className="text-danger ">{errors.email}</Form.Text>
@@ -70,7 +76,7 @@ const SignUp = () => {
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Label htmlFor="password">Password</Form.Label>
+                            <Form.Label htmlFor="password">{t('auth.password')}</Form.Label>
                             <Form.Control
                                 value={password}
                                 onChange={handleChange}
@@ -78,7 +84,7 @@ const SignUp = () => {
                                 name="password"
                                 type="password"
                                 id="password"
-                                placeholder="Enter password"
+                                placeholder={t('placeholders.password')}
                             />
                             {touched.password && errors.password && (
                                 <Form.Text className="text-danger ">{errors.password}</Form.Text>
@@ -86,7 +92,7 @@ const SignUp = () => {
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Label htmlFor="confirmPassword">Password confirmation</Form.Label>
+                            <Form.Label htmlFor="confirmPassword">{t('auth.confirmPassword')}</Form.Label>
                             <Form.Control
                                 value={confirmPassword}
                                 onChange={handleChange}
@@ -94,7 +100,7 @@ const SignUp = () => {
                                 name="confirmPassword"
                                 type="password"
                                 id="confirmPassword"
-                                placeholder="Confirm password"
+                                placeholder={t('placeholders.confirmPassword')}
                             />
                             {touched.confirmPassword && errors.confirmPassword && (
                                 <Form.Text className="text-danger ">{errors.confirmPassword}</Form.Text>
@@ -102,10 +108,12 @@ const SignUp = () => {
                         </Form.Group>
 
                         <Button variant="success" disabled={!isValid} type="submit" onClick={() => handleSubmit()}>
-                            Sign Up
+                            {t('auth.signUp')}
                         </Button>
                         <br />
-                        <Link className="d-flex justify-content-center" to="/signIn"> Back to login </Link>
+                        <Link className="d-flex justify-content-center" to="/signIn">
+                            {t('auth.toSignIn')}
+                        </Link>
                     </Container>
                 );
             }}

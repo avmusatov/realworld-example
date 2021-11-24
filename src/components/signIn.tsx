@@ -4,25 +4,32 @@ import { Form, Button, Container } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { useActions } from '../hooks/useActions';
 import { SignInData } from '../store/types/userTypes';
+import { useTranslation } from 'react-i18next';
+import { useMemo } from 'react';
 
 const initialFormValues: SignInData = {
     email: '',
     password: '',
 };
 
-const validationSchema = yup.object().shape({
-    email: yup.string().email('Enter a correct email address').required('Required'),
-    password: yup.string().required('Required').min(3, 'Minimal length is 3'),
-});
-
 const SignIn = () => {
     const history = useHistory();
     const { signInUser } = useActions();
+    const { t } = useTranslation();
+
+    const validationSchema = useMemo(
+        () =>
+            yup.object().shape({
+                email: yup.string().email(t('validation.email')).required(t('validation.required')),
+                password: yup.string().required(t('validation.required')).min(3, t('validation.min3')),
+            }),
+        [t]
+    );
 
     return (
         <Formik
             initialValues={initialFormValues}
-            validateOnBlur
+            validateOnChange
             onSubmit={(values) => void signInUser(history, values)}
             validationSchema={validationSchema}
         >
@@ -30,17 +37,17 @@ const SignIn = () => {
                 const { email, password } = values;
                 return (
                     <Container className="auth-form">
-                        <h1 >Welcome to Real World!</h1>
-                        <h2 className="mb-5 text-muted">Please, sign in</h2>
+                        <h1>{t('auth.title')}</h1>
+                        <h2 className="mb-5 text-muted">{t('auth.signInSubtitle')}</h2>
                         <Form.Group className="mb-3">
-                            <Form.Label htmlFor="email">Email</Form.Label>
+                            <Form.Label htmlFor="email">{t('auth.email')}</Form.Label>
                             <Form.Control
                                 value={email}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="email"
                                 id="email"
-                                placeholder="Enter email"
+                                placeholder={t("placeholders.email")}
                             />
                             {touched.email && errors.email && (
                                 <Form.Text className="text-danger ">{errors.email}</Form.Text>
@@ -48,7 +55,7 @@ const SignIn = () => {
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Label htmlFor="password">Password</Form.Label>
+                            <Form.Label htmlFor="password">{t('auth.password')}</Form.Label>
                             <Form.Control
                                 value={password}
                                 onChange={handleChange}
@@ -56,17 +63,17 @@ const SignIn = () => {
                                 name="password"
                                 type="password"
                                 id="password"
-                                placeholder="Enter password"
+                                placeholder={t("placeholders.password")}
                             />
                             {touched.password && errors.password && (
                                 <Form.Text className="text-danger ">{errors.password}</Form.Text>
                             )}
                         </Form.Group>
                         <Button variant="success" disabled={!isValid} type="submit" onClick={() => handleSubmit()}>
-                            Sign In
+                            {t('auth.signIn')}
                         </Button>
                         <br />
-                        <Link to="/signUp"> Create an account </Link>
+                        <Link className="d-flex justify-content-center" to="/signUp">{t('auth.toSignUp')}</Link>
                     </Container>
                 );
             }}
